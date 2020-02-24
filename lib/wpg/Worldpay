@@ -1,6 +1,6 @@
 <?php
 
-namespace Thanhvo\WorldpayWPG;
+namespace Thanhvo\Worldpay\WPG;
 
 class Worldpay
 {

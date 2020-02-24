@@ -1,6 +1,6 @@
 {
-    "name": "thanhvo/worldpay-wpg",
-    "description": "PHP Library for Worldpay XML API",
+    "name": "thanhvo/worldpay",
+    "description": "PHP Library for Worldpay API",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -12,7 +12,7 @@
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
-            "ThanhVo\\WorldpayWPG\\": "lib/"
+            "ThanhVo\\Worldpay\\": "lib/"
         }
     },
     "require": {}
