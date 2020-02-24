@@ -1,0 +1,11 @@
+<?php
+
+namespace WorldpayXml;
+
+class Worldpay
+{
+    public function createOrder(array $order = [])
+    {
+        exit('worldpay');
+    }
+}

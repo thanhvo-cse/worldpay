@@ -1,0 +1,17 @@
+{
+    "name": "thanhvo/worldpay-wpg",
+    "description": "PHP Library for Worldpay XML API",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Thanh Vo",
+            "email": "thanh.vo@legato.co"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "ThanhVo\\WorldpayXml\\": "lib/"
+        }
+    },
+    "require": {}
+}
