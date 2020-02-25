@@ -15,5 +15,7 @@
             "ThanhVo\\Worldpay\\": "lib/"
         }
     },
-    "require": {}
+    "require": {
+        "guzzlehttp/guzzle": "*"
+    }
 }
