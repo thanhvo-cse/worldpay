@@ -1,8 +1,8 @@
 <?php
-namespace Thanhvo\Worldpay\WPG;
+namespace ThanhVo\Worldpay\WPG;
 
 use GuzzleHttp\RequestOptions;
-use Thanhvo\Worldpay\Client as CommonClient;
+use ThanhVo\Worldpay\Client as CommonClient;
 
 class Client extends CommonClient
 {
@@ -12,12 +12,7 @@ class Client extends CommonClient
     const MODE_TEST = 'test';
     const MODE_LIVE = 'live';
 
-    const VERSION = '1.4';
-
-    /**
-     * @var string
-     */
-    protected $_contentType = 'text/xml; charset=UTF8';
+    const CONTENT_TYPE = 'text/xml';
 
     /**
      * Client constructor.
@@ -31,19 +26,38 @@ class Client extends CommonClient
             parent::__construct(self::BASE_URL_TEST);
         }
 
+        $this->authorize();
+    }
+
+    public function request(
+        string $method,
+        string $uri,
+        $params
+    )
+    {
+        $headers = $this->_headers;
+        $headers['Content-Type'] = self::CONTENT_TYPE;
+
+        $response = $this->_client->request(
+            $method,
+            $uri,
+            [
+                RequestOptions::HEADERS => $headers,
+                RequestOptions::BODY => $this->getBody($params),
+                CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_2
+            ]
+        );
+
+        return new \SimpleXMLElement($response->getBody()->getContents());
+    }
+
+    private function authorize()
+    {
         $authorisation = base64_encode(
             'HKAIRGPAHKD' . ':' . 'Live2019!'
         );
 
         $this->setHeader('Authorization', 'Basic ' . $authorisation);
-    }
-
-    public function post(
-        string $uri,
-        \SimpleXMLElement $data
-    )
-    {
-        return parent::post($uri, $this->getBody($data), RequestOptions::BODY);
     }
 
     /**
