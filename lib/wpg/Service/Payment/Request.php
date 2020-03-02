@@ -15,7 +15,7 @@ class Request
     private $installationId;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $captureDelay;
 
@@ -25,7 +25,7 @@ class Request
     private $description;
 
     /**
-     * @var string
+     * @var int
      */
     private $amount;
 
@@ -35,17 +35,17 @@ class Request
     private $currencyCode;
 
     /**
-     * @var string
+     * @var int
      */
     private $exponent;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $paymentMethodMaskInclude;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $paymentMethodMaskExclude;
 
@@ -61,43 +61,43 @@ class Request
      * @param string $orderCode
      * @return Request
      */
-    public function setOrderCode(string $orderCode): void
+    public function setOrderCode(string $orderCode): Request
     {
         $this->orderCode = $orderCode;
         return $this;
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getInstallationId(): string
+    public function getInstallationId(): ?string
     {
         return $this->installationId;
     }
 
     /**
-     * @param string $installationId
+     * @param string null|$installationId
      * @return Request
      */
-    public function setInstallationId(string $installationId): void
+    public function setInstallationId(?string $installationId): Request
     {
         $this->installationId = $installationId;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCaptureDelay(): string
+    public function getCaptureDelay(): ?string
     {
         return $this->captureDelay;
     }
 
     /**
-     * @param string $captureDelay
+     * @param string|null $captureDelay
      * @return Request
      */
-    public function setCaptureDelay(string $captureDelay): void
+    public function setCaptureDelay(?string $captureDelay): Request
     {
         $this->captureDelay = $captureDelay;
         return $this;
@@ -115,27 +115,41 @@ class Request
      * @param string $description
      * @return Request
      */
-    public function setDescription(string $description): void
+    public function setDescription(string $description): Request
     {
         $this->description = $description;
         return $this;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getAmount(): string
+    public function getAmount(): int
     {
         return $this->amount;
     }
 
     /**
-     * @param string $amount
+     * @param string $amountStr
      * @return Request
      */
-    public function setAmount(string $amount): void
+    public function setAmount(string $amountStr): Request
     {
+        $amounts = explode('.', $amountStr);
+        $amount = $amounts[0];
+        $fraction = 0;
+        $exponent = 0;
+
+        if (count($amounts) > 1) {
+            $fraction = $amounts[1];
+            $exponent = strlen($fraction);
+        }
+
+        $amount *= pow(10, $exponent);
+        $amount += $fraction;
         $this->amount = $amount;
+        $this->exponent = $exponent;
+
         return $this;
     }
 
@@ -151,16 +165,16 @@ class Request
      * @param string $currencyCode
      * @return Request
      */
-    public function setCurrencyCode(string $currencyCode): void
+    public function setCurrencyCode(string $currencyCode): Request
     {
-        $this->currencyCode = $currencyCode;
+        $this->currencyCode = strtoupper($currencyCode);
         return $this;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getExponent(): string
+    public function getExponent(): int
     {
         return $this->exponent;
     }
@@ -169,43 +183,43 @@ class Request
      * @param string $exponent
      * @return Request
      */
-    public function setExponent(string $exponent): void
+    public function setExponent(string $exponent): Request
     {
         $this->exponent = $exponent;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPaymentMethodMaskInclude(): string
+    public function getPaymentMethodMaskInclude(): ?string
     {
         return $this->paymentMethodMaskInclude;
     }
 
     /**
-     * @param string $paymentMethodMaskInclude
+     * @param string|null $paymentMethodMaskInclude
      * @return Request
      */
-    public function setPaymentMethodMaskInclude(string $paymentMethodMaskInclude): void
+    public function setPaymentMethodMaskInclude(?string $paymentMethodMaskInclude): Request
     {
         $this->paymentMethodMaskInclude = $paymentMethodMaskInclude;
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPaymentMethodMaskExclude(): string
+    public function getPaymentMethodMaskExclude(): ?string
     {
         return $this->paymentMethodMaskExclude;
     }
 
     /**
-     * @param string $paymentMethodMaskExclude
+     * @param string|null $paymentMethodMaskExclude
      * @return Request
      */
-    public function setPaymentMethodMaskExclude(string $paymentMethodMaskExclude): void
+    public function setPaymentMethodMaskExclude(?string $paymentMethodMaskExclude): Request
     {
         $this->paymentMethodMaskExclude = $paymentMethodMaskExclude;
         return $this;
