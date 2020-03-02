@@ -1,17 +1,11 @@
 <?php
 
-namespace Thanhvo\Worldpay;
+namespace ThanhVo\Worldpay;
 
 use GuzzleHttp\Client as HttpClient;
-use GuzzleHttp\RequestOptions;
 
-class Client
+abstract class Client
 {
-    /**
-     * @var string
-     */
-    protected $_contentType;
-
     /**
      * @var HttpClient
      */
@@ -40,69 +34,5 @@ class Client
     {
         $this->_headers[$key] = $value;
         return $this;
-    }
-
-    /**
-     * @param string $uri
-     * @param mixed $params
-     * @param string $paramFormat
-     * @param string|null $contentType
-     * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function get(string $uri, mixed $params, string $paramFormat = RequestOptions::JSON, string $contentType = null)
-    {
-        return $this->request('get', $uri, $params, $paramFormat, $contentType);
-    }
-
-    /**
-     * @param string $uri
-     * @param mixed $params
-     * @param string $paramFormat
-     * @param string|null $contentType
-     * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function post(string $uri, mixed $params, string $paramFormat = RequestOptions::JSON, string $contentType = null)
-    {
-        return $this->request('post', $uri, $params, $paramFormat, $contentType);
-    }
-
-    /**
-     * @param string $uri
-     * @param mixed $params
-     * @param string $paramFormat
-     * @param string|null $contentType
-     * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function put(string $uri, mixed $params, string $paramFormat = RequestOptions::JSON, string $contentType = null)
-    {
-        return $this->request('put', $uri, $params, $paramFormat, $contentType);
-    }
-
-    /**
-     * @param string $method
-     * @param string $uri
-     * @param mixed $params
-     * @param string $paramFormat
-     * @param string|null $contentType
-     * @return mixed|\Psr\Http\Message\ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    protected function request(string $method, string $uri, mixed $params, string $paramFormat, ?string $contentType)
-    {
-        $headers = $this->_headers;
-        if (!empty($contentType)) {
-            $headers['Content-Type'] = $contentType;
-        } else {
-            $headers['Content-Type'] = $this->_contentType;
-        }
-
-        return $this->_client->request($method, $uri, [
-            RequestOptions::HEADERS => $headers,
-            $paramFormat => $params,
-            RequestOptions::VERIFY => false
-        ]);
     }
 }
