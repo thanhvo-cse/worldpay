@@ -130,23 +130,17 @@ class Request
     }
 
     /**
-     * @param string $amountStr
+     * @param float $floatAmount
+     * @param int $exponent
      * @return Request
      */
-    public function setAmount(string $amountStr): Request
+    public function setAmount(float $floatAmount, int $exponent): Request
     {
-        $amounts = explode('.', $amountStr);
-        $amount = $amounts[0];
-        $fraction = 0;
-        $exponent = 0;
-
-        if (count($amounts) > 1) {
-            $fraction = $amounts[1];
-            $exponent = strlen($fraction);
-        }
-
+        $amountStr = number_format($floatAmount, $exponent);
+        list($amount, $fraction) = explode('.', $amountStr);
         $amount *= pow(10, $exponent);
         $amount += $fraction;
+
         $this->amount = $amount;
         $this->exponent = $exponent;
 

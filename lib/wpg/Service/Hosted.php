@@ -91,7 +91,8 @@ class Hosted
     /**
      * @param string $macSecret
      * @param string $orderKey
-     * @param string $amount
+     * @param float $amount
+     * @param int $exponent
      * @param string $currency
      * @param string $paymentStatus
      * @return string
@@ -99,17 +100,22 @@ class Hosted
     public function genMacSHA(
         string $macSecret,
         string $orderKey,
-        string $amount,
+        float $amount,
+        int $exponent,
         string $currency,
         string $paymentStatus
     )
     {
+        $request = new Request();
+        $request->setAmount($amount, $exponent);
+        $request->setCurrencyCode($currency);
+
         return $this->genMac(
             'sha256',
             $macSecret,
             $orderKey,
-            $amount,
-            $currency,
+            $request->getAmount(),
+            $request->getCurrencyCode(),
             $paymentStatus
         );
     }
