@@ -50,6 +50,11 @@ class Request
     private $paymentMethodMaskExclude;
 
     /**
+     * @var string|null
+     */
+    private $dynamic3DS;
+
+    /**
      * @return string
      */
     public function getOrderCode(): string
@@ -216,6 +221,24 @@ class Request
     public function setPaymentMethodMaskExclude(?string $paymentMethodMaskExclude): Request
     {
         $this->paymentMethodMaskExclude = $paymentMethodMaskExclude;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDynamic3DS(): ?string
+    {
+        return $this->dynamic3DS;
+    }
+
+    /**
+     * @param string|null $dynamic3DS
+     * @return Request
+     */
+    public function setDynamic3DS(?string $dynamic3DS): Request
+    {
+        $this->dynamic3DS = $dynamic3DS;
         return $this;
     }
 }

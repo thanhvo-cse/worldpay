@@ -56,4 +56,28 @@ class Modification
             throw new Exception($response->reply->error->__toString());
         }
     }
+
+    /**
+     * @param Request $request
+     * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function cancelRequest(Request $request)
+    {
+        $xml = $this->client->getPaymentXML();
+
+        $order = $xml->addChild('modify')->addChild('orderModification');
+        $order->addAttribute('orderCode', $request->getOrderCode());
+        $order->addChild('cancel');
+
+        $response = $this->client->request(
+            'post',
+            'jsp/merchant/xml/paymentService.jsp',
+            $xml
+        );
+
+        if (!empty($response->reply->error)) {
+            throw new Exception($response->reply->error->__toString());
+        }
+    }
 }

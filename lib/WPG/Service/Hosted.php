@@ -70,6 +70,11 @@ class Hosted
                 ->addAttribute('code', $request->getPaymentMethodMaskExclude());
         }
 
+        if (!empty($request->getDynamic3DS())) {
+            $order->addChild('dynamic3DS')
+                ->addAttribute('overrideAdvice', $request->getDynamic3DS());
+        }
+
         $response = $this->client->request(
             'post',
             'jsp/merchant/xml/paymentService.jsp',
