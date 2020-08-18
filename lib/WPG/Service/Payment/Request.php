@@ -142,7 +142,10 @@ class Request
     public function setAmount(float $floatAmount, int $exponent): Request
     {
         $amountStr = number_format($floatAmount, $exponent, '.', '');
-        list($amount, $fraction) = explode('.', $amountStr);
+        $amounts = explode('.', $amountStr);
+        $amount = $amounts[0];
+        $fraction = !empty($amounts[1]) ? $amounts[1] : 0;
+
         $amount *= pow(10, $exponent);
         $amount += $fraction;
 

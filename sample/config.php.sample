@@ -1,0 +1,9 @@
+<?php
+
+define('BASE_URL', 'https://localhost');
+define('SANDBOX_MODE', true);
+define('XML_USERNAME', 'USER');
+define('XML_PASSWORD', 'PASSWORD');
+define('INSTALLATION_ID', '123456789');
+define('MAC_SECRET', '123456789');
+define('AMOUNT_EXPONENT', 0);

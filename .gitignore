@@ -1,0 +1,6 @@
+# Composer
+vendor
+composer.lock
+
+# Sample
+sample/config.php
