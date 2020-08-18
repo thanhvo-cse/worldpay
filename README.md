@@ -11,5 +11,5 @@ composer require thanhvo-cse/worldpay
 #### Documentation
 https://developer.worldpay.com/docs/wpg
 
-### Sample
+#### Sample
 The sample is located in sample directory. Please find the readme file in there.
