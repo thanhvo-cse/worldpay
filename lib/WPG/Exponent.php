@@ -1,7 +1,7 @@
 <?php
 namespace ThanhVo\Worldpay\WPG;
 
-use mysql_xdevapi\Exception;
+use ThanhVo\Worldpay\Exception;
 
 class Exponent
 {
@@ -194,12 +194,14 @@ class Exponent
     /**
      * @param string $currency
      * @return int
+     * @throws Exception
      */
     public function getByCurrency(string $currency): int
     {
         if (!isset($this->exponent[$currency])) {
-            throw new Exception(printf('Currency don\'t support'));
+            throw new Exception(printf('Currency code %s is not supported', $currency));
         }
+
         return $this->exponent[$currency];
     }
 }
