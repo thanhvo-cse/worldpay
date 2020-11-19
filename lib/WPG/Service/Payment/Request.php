@@ -2,6 +2,9 @@
 
 namespace ThanhVo\Worldpay\WPG\Service\Payment;
 
+use ThanhVo\Worldpay\Exception;
+use ThanhVo\Worldpay\WPG\Exponent;
+
 class Request
 {
     /**
@@ -128,30 +131,43 @@ class Request
 
     /**
      * @return int
+     * @throws Exception
      */
     public function getAmount(): int
     {
+        $currencyCode = $this->getCurrencyCode();
+        $exponentMgmt = new Exponent();
+        $exponent = $exponentMgmt->getByCurrency($currencyCode);
+
+        $floats = explode('.', $this->amount);
+        $amount = $floats[0];
+        $fraction = 0;
+        $fractionLength = 0;
+        if (count($floats) > 1) {
+            $fraction = $floats[1];
+            $fractionLength = strlen($fraction);
+        }
+
+        if ($exponent < $fractionLength) {
+            throw new Exception(sprintf('Please make sure the amount exponent is equal or less than %s', $exponent));
+        }
+
+        $fraction *= pow(10, ($exponent - $fractionLength));
+        $amount *= pow(10, $exponent);
+        $amount += $fraction;
+        $this->amount = $amount;
+        $this->exponent = $exponent;
+
         return $this->amount;
     }
 
     /**
      * @param float $floatAmount
-     * @param int $exponent
-     * @return Request
+     * @return $this
      */
-    public function setAmount(float $floatAmount, int $exponent): Request
+    public function setAmount(float $floatAmount): Request
     {
-        $amountStr = number_format($floatAmount, $exponent, '.', '');
-        $amounts = explode('.', $amountStr);
-        $amount = $amounts[0];
-        $fraction = !empty($amounts[1]) ? $amounts[1] : 0;
-
-        $amount *= pow(10, $exponent);
-        $amount += $fraction;
-
-        $this->amount = $amount;
-        $this->exponent = $exponent;
-
+        $this->amount = $floatAmount;
         return $this;
     }
 
