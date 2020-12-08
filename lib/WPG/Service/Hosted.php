@@ -2,13 +2,17 @@
 
 namespace ThanhVo\Worldpay\WPG\Service;
 
+use ThanhVo\Worldpay\Event\ObserverInterface;
 use ThanhVo\Worldpay\Exception;
+use ThanhVo\Worldpay\Event\Dispatcher;
 use ThanhVo\Worldpay\WPG\Client;
 use ThanhVo\Worldpay\WPG\Service\Payment\Request;
 use ThanhVo\Worldpay\WPG\Service\Payment\ResultUrl;
 
 class Hosted
 {
+    use Dispatcher;
+
     /**
      * @var Client
      */
@@ -122,6 +126,14 @@ class Hosted
             $request->getCurrencyCode(),
             $paymentStatus
         );
+    }
+
+    /**
+     * @param ObserverInterface $listener
+     */
+    protected function afterNewEventObserver(ObserverInterface $listener)
+    {
+        $this->client->addEventObserver($listener);
     }
 
     /**
