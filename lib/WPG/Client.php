@@ -3,9 +3,12 @@ namespace ThanhVo\Worldpay\WPG;
 
 use GuzzleHttp\RequestOptions;
 use ThanhVo\Worldpay\Client as CommonClient;
+use ThanhVo\Worldpay\Event\Dispatcher;
 
 class Client extends CommonClient
 {
+    use Dispatcher;
+
     /**
      * API version
      */
@@ -35,6 +38,16 @@ class Client extends CommonClient
      * Message content type
      */
     const CONTENT_TYPE = 'text/xml';
+
+    /**
+     * Event before request
+     */
+    const EVENT_BEFORE_REQUEST = 'before_request';
+
+    /**
+     * Event after response
+     */
+    const EVENT_AFTER_RESPONSE = 'after_response';
 
     /**
      * @var string
@@ -75,17 +88,23 @@ class Client extends CommonClient
         $headers = $this->_headers;
         $headers['Content-Type'] = self::CONTENT_TYPE;
 
+        $requestBody = $this->getBody($params);
+        $this->dispatchEvent(static::EVENT_BEFORE_REQUEST, $requestBody);
+
         $response = $this->_client->request(
             $method,
             $uri,
             [
                 RequestOptions::HEADERS => $headers,
-                RequestOptions::BODY => $this->getBody($params),
+                RequestOptions::BODY => $requestBody,
                 CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_2
             ]
         );
 
-        return new \SimpleXMLElement($response->getBody()->getContents());
+        $responseBody = $response->getBody()->getContents();
+        $this->dispatchEvent(static::EVENT_AFTER_RESPONSE, $responseBody);
+
+        return new \SimpleXMLElement($responseBody);
     }
 
     /**
