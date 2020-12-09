@@ -37,7 +37,7 @@ class BeforeRequestListener implements ThanhVo\Worldpay\Event\ObserverInterface
 ```php
 $hosted = new \ThanhVo\Worldpay\WPG\Service\Hosted();
 $beforeObserver = new BeforeRequestListener();
-$hosted->addEventObserver($hosted);
+$hosted->addEventObserver($beforeObserver);
 ...
 ```
 ##### Event list
