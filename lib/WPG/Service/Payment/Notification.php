@@ -166,4 +166,13 @@ class Notification
     {
         return $this->journal->bookingDate;
     }
+
+    /**
+     * @return boolean
+     */
+    public function isValidIP($requestingIP)
+    {
+        $host = gethostbyaddr($requestingIP);
+        return (bool) preg_match('/\.worldpay\.com$/', $host);
+    }
 }
