@@ -166,4 +166,14 @@ class Notification
     {
         return $this->journal->bookingDate;
     }
+
+    /**
+     * @return boolean
+     */
+    public function isValidIP($requestingIP)
+    {
+        // Reverse DNS lookup - the domain is *.worldpay.com
+        $host = gethostbyaddr($requestingIP);
+        return (bool) preg_match('/\.worldpay\.com$/', $host);
+    }
 }
